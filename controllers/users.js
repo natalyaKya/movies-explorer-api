@@ -14,7 +14,10 @@ module.exports.returnCurrentUser = (req, res, next) => {
   User.findOne({ _id })
     .orFail(new NotFoundError(`Пользователь с таким _id ${req.user._id} не найден`))
     .then((user) => {
-      res.send(user);
+      res.send({
+        name: user.name,
+        email: user.email,
+      });
     })
     .catch(next);
 };
@@ -52,7 +55,10 @@ module.exports.updateUser = (req, res, next) => {
   })
     .orFail(new NotFoundError('Такого пользователя не существует'))
     .then((user) => {
-      res.send(user);
+      res.send({
+        name: user.name,
+        email: user.email,
+      });
     })
     .catch(next);
 };
@@ -73,7 +79,10 @@ module.exports.login = (req, res, next) => {
           }
           const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : JWT_SECRET_KEY, { expiresIn: '7d' });
           return res.cookie('jwt', token, { httpOnly: true })
-            .send({ user }).end();
+            .send({
+              name: user.name,
+              email: user.email,
+            }).end();
         });
     })
     .catch(next);
