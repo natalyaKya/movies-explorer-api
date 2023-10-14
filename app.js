@@ -10,15 +10,15 @@ const NotFoundError = require('./errors/not-found-err');
 const errorHandler = require('./middlewares/error-handler');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
-const { PORT = 3001 } = process.env;
+const { PORT = 3001, DB_URL = 'mongodb://127.0.0.1:27017/bitfilmsdb' } = process.env;
 
 const app = express();
 
-mongoose.connect('mongodb://127.0.0.1:27017/bitfilmsdb', {
+mongoose.connect(DB_URL, {
   useNewUrlParser: true,
 });
-// поменять домены
-app.use(cors({ origin: ['http://localhost:3000', 'https://mesto.natalyakya.nomoredomainsrocks.ru', 'http://mesto.natalyakya.nomoredomainsrocks.ru'], credentials: true }));
+
+app.use(cors({ origin: ['http://localhost:3000', 'http://projectkya.nomoredomainsrocks.ru/', 'https://projectkya.nomoredomainsrocks.ru/'], credentials: true }));
 app.use(helmet());
 app.use(express.json());
 

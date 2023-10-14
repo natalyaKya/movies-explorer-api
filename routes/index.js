@@ -12,9 +12,9 @@ const { validationLogin, validationCreateUser } = require('../middlewares/valida
 
 router.post('/signin', validationLogin, login);
 router.post('/signup', validationCreateUser, createUser);
-router.get('/signout', logout);
 router.use(cookieParser());
 router.use(auth);
+router.get('/signout', logout);
 router.use('/users', routerUser);
 router.use('/movies', routerMovie);
 
