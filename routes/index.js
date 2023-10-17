@@ -9,10 +9,14 @@ const {
   logout,
 } = require('../controllers/users');
 const { validationLogin, validationCreateUser } = require('../middlewares/validation');
+const NotFoundError = require('../errors/not-found-err');
 
 router.post('/signin', validationLogin, login);
 router.post('/signup', validationCreateUser, createUser);
 router.use(cookieParser());
+router.all('*', (req, res, next) => {
+  next(new NotFoundError('Страница не найдена'));
+});
 router.use(auth);
 router.get('/signout', logout);
 router.use('/users', routerUser);

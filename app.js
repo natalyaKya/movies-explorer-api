@@ -14,7 +14,7 @@ const { PORT = 3001, DB_URL = 'mongodb://127.0.0.1:27017/bitfilmsdb' } = process
 
 const app = express();
 
-mongoose.connect('mongodb://127.0.0.1:27017/bitfilmsdb', {
+mongoose.connect(DB_URL, {
   useNewUrlParser: true,
 });
 

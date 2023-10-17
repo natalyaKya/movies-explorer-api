@@ -5,6 +5,7 @@ const User = require('../models/user');
 const NotFoundError = require('../errors/not-found-err');
 const UnauthorizedError = require('../errors/unauthor-err');
 const DublicateError = require('../errors/dublicate-err');
+const ValidationError = require('../errors/validation-err');
 const { JWT_SECRET_KEY } = require('../utils/constants');
 
 const { NODE_ENV, JWT_SECRET } = process.env;
@@ -60,7 +61,15 @@ module.exports.updateUser = (req, res, next) => {
         email: user.email,
       });
     })
-    .catch(next);
+    .catch((err) => {
+      if (err.name === 'ValidationError') {
+        return next(new ValidationError('Некорректные данные'));
+      }
+      if (err.code === 11000) {
+        return next(new DublicateError('Пользователь с таким e-mail уже зарегистрирован'));
+      }
+      return next(err);
+    });
 };
 
 module.exports.login = (req, res, next) => {
