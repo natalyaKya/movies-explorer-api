@@ -14,12 +14,11 @@ const NotFoundError = require('../errors/not-found-err');
 router.post('/signin', validationLogin, login);
 router.post('/signup', validationCreateUser, createUser);
 router.use(cookieParser());
+router.get('/signout', auth, logout);
+router.use('/users', auth, routerUser);
+router.use('/movies', auth, routerMovie);
 router.all('*', (req, res, next) => {
   next(new NotFoundError('Страница не найдена'));
 });
-router.use(auth);
-router.get('/signout', logout);
-router.use('/users', routerUser);
-router.use('/movies', routerMovie);
 
 module.exports = router;
