@@ -87,7 +87,7 @@ module.exports.login = (req, res, next) => {
             return next(new UnauthorizedError('Неверные логин или пароль'));
           }
           const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : JWT_SECRET_KEY, { expiresIn: '7d' });
-          return res.cookie('jwt', token, { httpOnly: true })
+          return res.cookie('jwt', token, { httpOnly: true, sameSite: true, secure: true })
             .send({
               name: user.name,
               email: user.email,
