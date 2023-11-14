@@ -25,27 +25,27 @@ module.exports.returnCurrentUser = (req, res, next) => {
 
 module.exports.createUser = (req, res, next) => {
   const {
-    name, email, password,
+    name,
+    email,
   } = req.body;
-  bcrypt.hash(password, 10)
-    .then((hash) => User.create({
-      email,
-      password: hash,
-      name,
-    }))
-    .then((user) => {
-      res.status(201).send({
-        _id: user._id,
-        name: user.name,
-        email: user.email,
-      });
+  bcrypt.hash(req.body.password, 10)
+    .then((hash) => {
+      User.create({
+        name,
+        email,
+        password: hash,
+      })
+        .then((user) => res.status(201).send({
+          _id: user._id,
+          name: user.name,
+          email: user.email,
+        }))
+        .catch((err) => {
+          if (err.code === 11000) return next(new DublicateError('Пользователь с таким e-mail уже зарегистрирован'));
+          return next(err);
+        });
     })
-    .catch((err) => {
-      if (err.code === 11000) {
-        return next(new DublicateError('Пользователь с таким e-mail уже зарегистрирован'));
-      }
-      return next(err);
-    });
+    .catch(next);
 };
 
 module.exports.updateUser = (req, res, next) => {
@@ -87,7 +87,7 @@ module.exports.login = (req, res, next) => {
             return next(new UnauthorizedError('Неверные логин или пароль'));
           }
           const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : JWT_SECRET_KEY, { expiresIn: '7d' });
-          return res.cookie('jwt', token, { httpOnly: true, sameSite: true, secure: true })
+          return res.cookie('jwt', token, { httpOnly: true })
             .send({
               name: user.name,
               email: user.email,
