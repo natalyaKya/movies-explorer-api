@@ -1,1 +1,2 @@
-module.exports.regularLink = /^http(s)?:\/\/(www\.)?[a-zA-Z0-9\-._~:/?#[\]@!$&'()*+,;=]{2,}\.[a-zA-Z0-9./?#-]{2,}$/;
+// eslint-disable-next-line no-useless-escape
+module.exports.regularLink = /^(https|http):\/\/(w{3}\.)?[A-ZА-ЯЁ0-9\-\._~:/?#[\]@!$&'()*\+,;=]+\.[A-ZА-ЯЁ0-9\-\._~:/?#[\]@!$&'()*\+,;=]{2,256}/i;
