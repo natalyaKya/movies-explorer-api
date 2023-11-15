@@ -14,7 +14,7 @@ const router = require('./routes/index');
 mongoose.connect('mongodb://127.0.0.1:27017/bitfilmsdb');
 
 const app = express();
-app.use(cors({ origin: ['http://localhost:3000', 'https://elem.nomoredomainsicu.ru', 'http://elem.nomoredomainsicu.ru'], credentials: true }));
+app.use(cors({ origin: ['http://localhost:3000', 'https://projectkya.nomoredomainsrocks.ru/', 'http://projectkya.nomoredomainsrocks.ru/'], credentials: true }));
 app.use(helmet());
 app.use(cookieParser());
 app.use(bodyParser.json());
