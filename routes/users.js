@@ -18,8 +18,7 @@ routerUser.post('/signin', validationLogin, login);
 routerUser.post('/signup', validationCreateUser, createUser);
 routerUser.get('/signout', auth, logout);
 
-routerUser.use('/users', auth, routerUser);
-routerUser.get('users/me', validationReturnCurrentUser, auth, returnCurrentUser);
-routerUser.patch('users/me', validationUpdateUser, auth, updateUser);
+routerUser.get('/users/me', validationReturnCurrentUser, auth, returnCurrentUser);
+routerUser.patch('/users/me', validationUpdateUser, auth, updateUser);
 
 module.exports = routerUser;

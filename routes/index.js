@@ -10,7 +10,7 @@ const limiter = rateLimit({ windowMs: 10 * 60 * 1000, max: 100 });
 router.use(limiter);
 router.use(routerUser);
 router.use(routerMovie);
-router.all('*', (req, res, next) => {
+router.use((req, res, next) => {
   next(new NotFoundError('Страница не найдена'));
 });
 
